@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout Page</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    header {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      padding: 20px;
+      text-align: center;
+      color: #fff;
+      font-size: 24px;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1100px;
+      margin: 30px auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 25px;
+    }
+
+    .card {
+      background: #fff;
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-size: 22px;
+      color: #444;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 8px;
+    }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: 600;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 15px;
+      transition: border 0.3s;
+    }
+    input:focus, textarea:focus {
+      border: 1px solid #667eea;
+      outline: none;
+    }
+
+    .radio-group {
+      margin: 12px 0;
+      padding: 10px 0;
+    }
+    .radio-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: normal;
+    }
+
+    .summary {
+      font-size: 16px;
+    }
+    .summary p {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+    }
+    .total {
+      font-weight: bold;
+      font-size: 18px;
+      border-top: 2px solid #eee;
+      padding-top: 12px;
+      color: #222;
+    }
+
+    button {
+      width: 100%;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      padding: 16px;
+      margin-top: 20px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: linear-gradient(135deg, #5a6de0, #693b95);
+      transform: scale(1.03);
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>🛒 Secure Checkout</header>
+
+  <div class="container">
+    <!-- Delivery Address -->
+    <div class="card">
+      <h2>Delivery Address</h2>
+      <form id="checkoutForm">
+        <label>Full Name</label>
+        <input type="text" required placeholder="Enter your full name">
+        
+        <label>Phone Number</label>
+        <input type="tel" required placeholder="+91 9876543210">
+        
+        <label>Address</label>
+        <textarea rows="3" required placeholder="Street address, Apartment, etc."></textarea>
+        
+        <label>City</label>
+        <input type="text" required placeholder="Enter your city">
+        
+        <label>Postal Code</label>
+        <input type="text" required placeholder="ZIP / PIN Code">
+        
+        <h2>Payment Method</h2>
+        <div class="radio-group">
+          <label><input type="radio" name="payment" value="cod" required> 💵 Cash on Delivery</label>
+          <label><input type="radio" name="payment" value="card"> 💳 Credit/Debit Card</label>
+          <label><input type="radio" name="payment" value="upi"> 📱 UPI</label>
+        </div>
+
+        <button type="submit">✅ Place Order</button>
+      </form>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="card">
+      <h2>Order Summary</h2>
+      <div class="summary" id="orderSummary"></div>
+    </div>
+  </div>
+
+  <script>
+    // Load cart items from localStorage
+    function loadCart() {
+      let cart = JSON.parse(localStorage.getItem("dealspotter_cart")) || [];
+      let summaryDiv = document.getElementById("orderSummary");
+      summaryDiv.innerHTML = "";
+  
+      if(cart.length === 0) {
+        summaryDiv.innerHTML = "<p>Your cart is empty.</p>";
+        return;
+      }
+  
+      let subtotal = 0;
+      cart.forEach(item => {
+        subtotal += item.price * item.quantity;
+        summaryDiv.innerHTML += `
+          <p>
+            <span>${item.name} (x${item.quantity})</span>
+            <span>₹${(item.price * item.quantity).toLocaleString('en-IN')}</span>
+          </p>
+        `;
+      });
+  
+      let shipping = subtotal > 1000 ? 40 : 50;
+      let total = subtotal + shipping;
+  
+      summaryDiv.innerHTML += `<p><span>Shipping</span><span>₹${shipping}</span></p>`;
+      summaryDiv.innerHTML += `<p class="total"><span>Total</span><span>₹${total.toLocaleString('en-IN')}</span></p>`;
+    }
+  
+    loadCart();
+  
+    // Checkout form
+    document.getElementById("checkoutForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      alert("🎉 Order placed successfully! Thank you for shopping with us.");
+      localStorage.removeItem("dealspotter_cart"); // clear cart after order
+    });
+  </script>  
+</body>
+</html>

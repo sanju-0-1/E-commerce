@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DealSpotter - Mobile Products</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: aqua;
+      color: darkblue;
+      line-height: 1.5;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      background: orange;
+      z-index: 10;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      font-weight: 700;
+      font-size: 1.5rem;
+      letter-spacing: 0.3px;
+      color: darkblue;
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1 1 280px;
+      max-width: 420px;
+    }
+    
+    .search-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #fff;
+      outline: none;
+      font-size: 1rem;
+    }
+    
+    .search-button {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      background: darkblue;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    
+    .search-button:hover {
+      background: blue;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+      padding-top: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      transition: transform 120ms ease, box-shadow 120ms ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .card:hover { 
+      transform: translateY(-5px); 
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+
+    .thumb {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+      background: #eee;
+    }
+
+    .info {
+      padding: 16px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0;
+      height: 2.5em;
+      overflow: hidden;
+    }
+
+    .price { 
+      font-weight: 700; 
+      font-size: 1.2rem;
+      color: #e63946;
+    }
+    
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .btn {
+      padding: 10px 16px;
+      border: 0;
+      border-radius: 8px;
+      background: darkblue;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 120ms ease;
+    }
+    
+    .btn:hover {
+      background: blue;
+    }
+    
+    .btn:active { 
+      background: darkblue; 
+    }
+    
+    .btn-buy {
+      background: #e63946;
+    }
+    
+    .btn-buy:hover {
+      background: #d62828;
+    }
+    .modal {
+        position: fixed;
+        z-index: 100;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+        display: none; /* Hidden by default */
+        align-items: center;
+        justify-content: center;
+    }
+    .btn1 {
+            display: inline-block;
+            background-color: #e74c3c;
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+    
+    .modal-content {
+        background-color: #fefefe;
+        padding: 24px;
+        border-radius: 10px;
+        max-width: 500px;
+        width: 90%;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    
+    .close-btn {
+        color: #aaa;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    
+    .close-btn:hover,
+    .close-btn:focus {
+        color: #000;
+    }
+    
+    .cart-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .item-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .item-info img {
+        width: 60px;
+        height: 60px;
+        border-radius: 8px;
+        object-fit: cover;
+    }
+    
+    .item-title {
+        font-weight: 600;
+    }
+    
+    .item-price {
+        font-weight: 700;
+        color: #e74c3c;
+    }
+    
+    .quantity-controls {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    
+    .quantity-controls button {
+        background: #ddd;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+    
+    .cart-summary {
+        text-align: right;
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-top: 20px;
+    }
+    
+    .cart-empty-message {
+        text-align: center;
+        color: #777;
+    }
+    
+    @media (max-width: 768px) {
+      .topbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .search-container {
+        max-width: 100%;
+      }
+      
+      .products {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container topbar">
+      <div class="brand">DealSpotter</div>
+      <div class="search-container">
+        <input type="search" class="search-input" id="searchInput" placeholder="Search products..." />
+        <button class="search-button" onclick="searchProduct()">Search</button>
+      </div>
+      <div class="cart-icon">
+        <button class="btn" onclick="openCartModal()">Cart (<span id="cartCount">0</span>)</button>
+      </div>
+    </div>
+  </header>
+  
+  <div id="toast"></div>
+  
+  <main class="container">
+    <h1>Featured Mobile Products</h1>
+    <section class="products" id="productList">
+      <article class="card" data-id="1">
+              <img class="thumb" src="apple.jpeg" alt="iPhone 16 Pro Max" />
+              <div class="info">
+                <h2 class="title">iPhone 16 Pro Max</h2>
+                <div class="price" data-price="133900">₹1,33,900</div>
+                <div class="price-row">
+                  <button class="btn btn-buy">Buy now</button>
+                  <button class="btn add-to-cart">Add to cart</button>
+                </div>
+              </div>
+            </article>
+      
+      <article class="card" data-id="2">
+              <img class="thumb" src="samsung.jpeg" alt="Samsung Galaxy S25 Ultra" />
+              <div class="info">
+                <h2 class="title">Samsung Galaxy S25 Ultra</h2>
+                <div class="price" data-price="114900">₹1,14,900</div>
+                <div class="price-row">
+                  <button class="btn btn-buy">Buy now</button>
+                  <button class="btn add-to-cart">Add to cart</button>
+                </div>
+              </div>
+            </article>
+
+      <article class="card" data-id="3">
+              <img class="thumb" src="huawei.jpeg" alt="Huawei Mate XT" />
+              <div class="info">
+                <h2 class="title">Huawei Mate XT</h2>
+                <div class="price" data-price="149999">₹1,49,999</div>
+                <div class="price-row">
+                  <button class="btn btn-buy">Buy now</button>
+                  <button class="btn add-to-cart">Add to cart</button>
+                </div>
+              </div>
+            </article>
+
+      <article class="card" data-id="4">
+              <img class="thumb" src="oppo.jpeg" alt="Oppo Reno14" />
+              <div class="info">
+                <h2 class="title">Oppo Reno14</h2>
+                <div class="price" data-price="49999">₹49,999</div>
+                <div class="price-row">
+                  <button class="btn btn-buy">Buy now</button>
+                  <button class="btn add-to-cart">Add to cart</button>
+                </div>
+              </div>
+            </article>
+
+      <article class="card" data-id="5">
+              <img class="thumb" src="vivo.jpeg" alt="Vivo Vx200 Pro" />
+              <div class="info">
+                <h2 class="title">Vivo Vx200 Pro</h2>
+                <div class="price" data-price="94999">₹94,999</div>
+                <div class="price-row">
+                  <button class="btn btn-buy">Buy now</button>
+                  <button class="btn add-to-cart">Add to cart</button>
+                </div>
+              </div>
+            </article>
+      
+      <article class="card" data-id="6">
+              <img class="thumb" src="rog.jpeg" alt="Rog 9 Pro" />
+              <div class="info">
+                <h2 class="title">Rog 9 Pro</h2>
+                <div class="price" data-price="94999">₹94,999</div>
+                <div class="price-row">
+                  <button class="btn btn-buy">Buy now</button>
+                  <button class="btn add-to-cart">Add to cart</button>
+                </div> 
+              </div>
+            </article>
+    </section>
+  </main>
+  <div id="cartModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Your Cart</h2>
+        <span class="close-btn" onclick="closeCartModal()">&times;</span>
+      </div>
+      <div id="cartItemsContainer">
+        <!-- Cart items will be dynamically added here -->
+      </div>
+      <div class="cart-summary">
+        Total: <span id="cartTotal">₹0</span>
+        <a href="checkout.html" class="btn1">Checkout</a>
+      </div>
+    </div>
+  </div>
+  <script>
+        // Local storage key for the cart
+        const CART_STORAGE_KEY = 'dealspotter_cart';
+
+// Get DOM elements
+const productList = document.getElementById('productList');
+const cartModal = document.getElementById('cartModal');
+const cartCountEl = document.getElementById('cartCount');
+const cartItemsContainer = document.getElementById('cartItemsContainer');
+const cartTotalEl = document.getElementById('cartTotal');
+
+// State for the cart
+let cart = JSON.parse(localStorage.getItem(CART_STORAGE_KEY)) || [];
+
+// Function to save the cart to local storage
+function saveCart() {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+}
+
+// Function to render the cart
+function renderCart() {
+    cartItemsContainer.innerHTML = '';
+    let total = 0;
+
+    if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<p class="cart-empty-message">Your cart is empty.</p>';
+    } else {
+        cart.forEach(item => {
+            const itemTotal = item.price * item.quantity;
+            total += itemTotal;
+            
+            const itemEl = document.createElement('div');
+            itemEl.className = 'cart-item';
+            itemEl.innerHTML = `
+                <div class="item-info">
+                    <img src="${item.image}" alt="${item.name}" />
+                    <div>
+                        <div class="item-title">${item.name}</div>
+                        <div class="item-price">₹${item.price.toLocaleString('en-IN')}</div>
+                    </div>
+                </div>
+                <div class="quantity-controls">
+                    <button onclick="updateQuantity(${item.id}, -1)">-</button>
+                    <span>${item.quantity}</span>
+                    <button onclick="updateQuantity(${item.id}, 1)">+</button>
+                    <button onclick="removeItem(${item.id})" style="background: #e74c3c; color: white;">&times;</button>
+                </div>
+            `;
+            cartItemsContainer.appendChild(itemEl);
+        });
+    }
+
+    cartTotalEl.textContent = `₹${total.toLocaleString('en-IN')}`;
+    cartCountEl.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+}
+
+// Function to add a product to the cart
+function addToCart(productId) {
+    const productEl = document.querySelector(`.card[data-id="${productId}"]`);
+    const existingItem = cart.find(item => item.id == productId);
+    
+    if (existingItem) {
+        existingItem.quantity++;
+    } else {
+        const product = {
+            id: productId,
+            name: productEl.querySelector('.title').textContent.trim(),
+            price: parseInt(productEl.querySelector('.price').dataset.price),
+            image: productEl.querySelector('.thumb').src,
+            quantity: 1
+        };
+        cart.push(product);
+    }
+    
+    saveCart();
+    renderCart();
+}
+
+// Function to update the quantity of an item
+function updateQuantity(productId, change) {
+    const item = cart.find(item => item.id == productId);
+    if (item) {
+        item.quantity += change;
+        if (item.quantity <= 0) {
+            removeItem(productId);
+        } else {
+            saveCart();
+            renderCart();
+        }
+    }
+}
+
+// Function to remove an item from the cart
+function removeItem(productId) {
+    cart = cart.filter(item => item.id != productId);
+    saveCart();
+    renderCart();
+}
+
+// Function to open the cart modal
+function openCartModal() {
+    cartModal.style.display = 'flex';
+}
+
+// Function to close the cart modal
+function closeCartModal() {
+    cartModal.style.display = 'none';
+}
+
+// Event listeners
+productList.addEventListener('click', (e) => {
+    if (e.target.classList.contains('add-to-cart')) {
+        const productCard = e.target.closest('.card');
+        const productId = productCard.dataset.id;
+        addToCart(productId);
+    }
+});
+
+// Close the modal when clicking outside of it
+window.onclick = function(event) {
+    if (event.target == cartModal) {
+        closeCartModal();
+    }
+}
+
+// Initial render
+renderCart();
+
+function searchProduct() {
+  const input = document.getElementById('searchInput').value.toLowerCase();
+  const products = document.querySelectorAll('.card');
+  
+  products.forEach(product => {
+    const title = product.querySelector('.title').textContent.toLowerCase();
+    if (title.includes(input)) {
+      product.style.display = 'block';
+    } else {
+      product.style.display = 'none';
+    }
+  });
+}
+
+document.getElementById('searchInput').addEventListener('keyup', function(event) {
+  if (event.key === 'Enter') {
+    searchProduct();
+  }
+});
+  </script>
+</body>
+</html>

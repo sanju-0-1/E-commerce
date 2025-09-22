@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DealSpotter - Your Online Shopping Destination</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        
+        header {
+            background-color: #ffffff;  
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .logo span {
+            color: #e74c3c;
+        }
+        
+        .navbar ul {
+            list-style: none;
+            display: flex;
+        }
+        
+        .navbar ul li {
+            position: relative;
+            margin-left: 30px;
+        }
+        
+        .navbar ul li a {
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .navbar ul li a:hover {
+            color: #e74c3c;
+        }
+        .dropdown {
+            display: block;
+            opacity: 0;
+            visibility: hidden;
+            position: absolute;
+            top: 120%;
+            left: 0;
+            background: #fff;
+            min-width: 200px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 10;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .navbar ul li:hover .dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        }
+
+        
+        .icons {
+            display: flex;
+        }
+        
+        .icons div {
+            margin-left: 20px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        
+        .hero {
+            background-image: url('img/3955595.jpg');
+            background-size: cover;
+            height: 120vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #fff;
+            padding: 0 20px;
+        }
+        
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: #e74c3c;
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .btn1 {
+            display: inline-block;
+            background-color: #4800ff;
+            color: #fff;
+            padding: 1px 10px;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .btn1:hover {
+            background-color: yellow;
+        }
+        .btn:hover {
+            background-color: #c0392b;
+        }
+        .categories {
+            padding: 60px 5%;
+            background-color: #f8f9fa; /* Changed from background image */
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .section-title h2 {
+            font-size: 2rem;
+            color: #2c3e50;
+        }
+        
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .category-card {
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .category-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .category-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .category-card:hover .category-img img {
+            transform: scale(1.1);
+        }
+        
+        .category-info {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .category-info h3 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+    
+        .newsletter {
+            padding: 60px 5%;
+            background-color: #2c3e50;
+            color: #fff;
+            height: 100vh;
+            text-align: center;
+        }
+        
+        .newsletter h2 {
+            margin-bottom: 20px;
+        }
+        
+        .newsletter p {
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        footer {
+            background-color: #1a252f;
+            color: #fff;
+            height: 100vh;
+            padding: 60px 5% 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a:hover {
+            color: #e74c3c;
+        }
+        
+        
+        .social-links a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: #2c3e50;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            transition: background-color 0.3s;
+        }
+        
+        .social-links a:hover {
+            background-color: #e74c3c;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #2c3e50;
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <div class="top-bar">
+            <div class="logo">Deal<span>Spotter</span></div>
+            <nav class="navbar">
+                <ul>
+                    <li>
+                        <a href="login.html" class="btn1">login</a>
+                        <ul class="dropdown">
+                          <li><a href="register.html">Sign Up</a></li>
+                        </ul>
+                      </li>
+                    <li><a href="#Home">Home</a></li>
+                    <li><a href="#categories">Categories</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#Contact">Contact</a></li>
+                </ul>
+            </nav>  
+        </div>
+    </header>
+
+    <section class="hero" id="Home">
+        <div class="hero-content">
+            <p>Discover our new arrivals with up to 30% discount</p>
+        </div>
+    </section>
+    
+    <section class="categories" id="categories">
+        <div class="section-title">
+          <h2>Shop by Category</h2>
+        </div>
+        <div class="category-grid">
+          <div class="category-card">
+            <div class="category-img">
+              <img src="electronics.png" alt="Electronics">
+            </div>
+            <div class="category-info">
+              <h3>Electronics</h3>
+              <a href="electronics.html" class="btn">Explore</a>
+            </div>
+          </div>
+          <div class="category-card">
+            <div class="category-img">
+              <img src="home&garden.png" alt="Home & Garden">
+            </div>
+            <div class="category-info">
+              <h3>Home & Garden</h3>
+              <a href="homegarden.html" class="btn">Explore</a>
+            </div>
+          </div>
+        </div>
+    </section>      
+    
+    <section class="newsletter" id="about">
+        <h2>About as</h2>
+        <p>DealSpotter is a modern and user-friendly e-commerce platform designed to make online shopping simple,
+            fast, and enjoyable. Our website offers a wide range of high-quality products across categories such as 
+            fashion, electronics, home décor, beauty, and more — all at competitive prices.
+            With a clean and responsive design, ShopEase ensures that customers can browse effortlessly on any device, 
+            from desktop to mobile. The homepage features curated collections, trending items, and exclusive deals, making 
+            it easy for shoppers to find exactly what they're looking for.
+            We prioritize secure payments, fast delivery, and excellent customer service, so every purchase is a smooth and 
+            satisfying experience. Whether you're hunting for the latest gadgets, updating your wardrobe, or gifting something
+             special, ShopEase has you covered — all from the comfort of your home.</p>
+    </section>
+
+    <footer>
+        <div class="footer-content" id="Contact">
+            <div class="footer-column">
+                <h3>DealSpotter</h3>
+                <p>Your one-stop destination for all your shopping needs. Quality products at affordable prices.</p>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Shop</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Customer Service</h3>
+                <ul>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Shipping Policy</a></li>
+                    <li><a href="#">Returns & Refunds</a></li>
+                    <li><a href="#">Track Order</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+                <ul>
+                    <li>123 Main Street, City</li>
+                    <li>Email: info@shopeasy.com</li>
+                    <li>Phone: (123) 456-7890</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 ShopEasy. All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
